@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mini Gadget Store</title>
+
+<!-- Tailwind  DaisyU-->
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+</head>
+
+<body class="bg-gray-100">
+
+<!-- Navbar -->
+
+<div class="navbar bg-base-100 shadow-md px-10">
+  <div class="flex-1">
+    <a class="text-xl font-bold">Mini Gadget Store</a>
+  </div>
+
+  <div class="flex-none">
+    <button class="btn btn-ghost">
+      Cart
+      <div class="badge badge-secondary ml-2">0</div>
+    </button>
+  </div>
+</div>
+
+<!-- Hero -->
+
+<div class="hero bg-base-200 py-16">
+  <div class="hero-content text-center">
+    <div>
+      <h1 class="text-4xl font-bold">Best Gadget Deals</h1>
+      <p class="py-4">
+        Discover the latest tech accessories for your setup
+      </p>
+      <button class="btn btn-primary">Shop Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- Category Buttons -->
+<div id="categoryButtons" class=" w-11/12 mx-auto grid grid-cols-5 gap-3 mb-6"></div>
+
+<!-- Product Cards Grid -->
+<div id="productContainer" class="grid md:grid-cols-3 gap-6"></div>
+<!-- Products -->
+
+<section  class="p-10">
+
+<h2 class="text-2xl font-bold mb-6">Products</h2>
+
+<div id="products" class="grid md:grid-cols-3 gap-6">
+
+<!-- Product Card -->
+
+
+</section>
+
+<!-- Cart Sidebar -->
+<div id="cartSidebar" class="fixed top-0 right-0 w-80 h-full bg-base-100 shadow-lg p-6 transform translate-x-full transition-transform">
+  <h2 class="text-xl font-bold mb-4">Your Cart</h2>
+  <div id="cartItems" class="space-y-4"></div>
+  <h3 class="mt-4 font-bold" id="cartTotal">Total: $0</h3>
+  <button class="btn btn-primary w-full mt-4">Checkout</button>
+  <button class="btn btn-outline w-full mt-2" onclick="toggleCart()">Close</button>
+</div>
+<!-- Suggested Products -->
+
+<section class="p-10 bg-base-200">
+
+<h2 class="text-2xl font-bold mb-6">You May Also Like</h2>
+
+<div class="grid md:grid-cols-3 gap-6">
+
+<div class="card bg-base-100 shadow">
+<div class="card-body">
+<h2 class="card-title">Bluetooth Speaker</h2>
+<p>$40</p>
+<button class="btn btn-primary btn-sm">View</button>
+</div>
+</div>
+
+<div class="card bg-base-100 shadow">
+<div class="card-body">
+<h2 class="card-title">USB Hub</h2>
+<p>$20</p>
+<button class="btn btn-primary btn-sm">View</button>
+</div>
+</div>
+
+</div>
+
+</section>
+
+<!-- Reviews -->
+
+<section class="p-10">
+
+<h2 class="text-2xl font-bold mb-6">Customer Reviews</h2>
+
+<div class="space-y-4">
+
+<div class="alert shadow">
+<span>⭐ ⭐ ⭐ ⭐ ⭐ Amazing sound quality!</span>
+</div>
+
+<div class="alert shadow">
+<span>⭐ ⭐ ⭐ ⭐ Good product for the price.</span>
+</div>
+
+</div>
+
+</section>
+
+<!-- Footer -->
+
+<footer class="footer footer-center p-6 bg-base-300 text-base-content">
+  <p>© 2026 Mini Gadget Store</p>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
