@@ -1,13 +1,13 @@
-const  allProducts = async () =>{
+const  fetchProducts = async () =>{
     const res = await fetch("https://dummyjson.com/products");
     const data = await res.json();
   console.log(data.products);
   displayProducts(data.products);
   renderCategoryButtons(data.products);
-  filterCategory(data.products)
+  // filterCategory(data.products)
   // showCart(data.products);
 }
-allProducts()
+fetchProducts()
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let reviews = [];
 
@@ -40,30 +40,31 @@ function displayProducts(allProduct){
 }
 
 function renderCategoryButtons(allProduct){
-  const container = document.getElementById("categoryButtons");
-  container.innerHTML = "";
+  const btnContainer = document.getElementById("categoryButtons");
+  btnContainer.innerHTML = "";
 
   // Get unique categories
-  // const categories = ["All", ...new Set(products.map(p=>p.category))];
+  const categories = ["All", ...new Set(allProduct.map(p => p.category))];
+  console.log(categories)
 
-  allProduct.forEach(cat=>{
+  categories.forEach(cat=>{
     const btn = document.createElement("button");
     btn.className = "btn btn-sm btn-outline";
     btn.innerHTML = `
-    <dutton>${cat.category}</dutton>
+    <dutton id="catagory-btn-$${cat}" >${cat}</dutton>
     `
-    btn.addEventListener("click",()=> filterCategory(cat));
-    container.appendChild(btn);
+    btn.addEventListener("click",()=> filterCategory(cat, allProduct));
+    btnContainer.appendChild(btn);
   });
 }
 renderCategoryButtons()
 
 // Filter Products
-function filterCategory(category, allProducts){
+function filterCategory(category, allProduct){
   if(category === "All"){
-    displayProducts(allProducts);
+    displayProducts(allProduct);
   } else {
-    const filtered = allProducts.filter(p => p.category === category);
+    const filtered = allProduct.filter(p => p.category === category);
     
     displayProducts(filtered);
   }
