@@ -1,19 +1,55 @@
-const  fetchProducts = async () =>{
+// console.log("connected")\
+const container = document.getElementById("products");
+ // console.log(container)
+const btnContainer = document.getElementById("categoryButtons");
+console.log(btnContainer);
+const allTab = document.getElementById("all-tab");
+console.log(allTab);
+const categoryButtons = document.querySelectorAll(".catagory-btns");
+console.log(categoryButtons);
+
+
+
+const fetchProducts = async () => {
     const res = await fetch("https://dummyjson.com/products");
     const data = await res.json();
-  console.log(data.products);
+  const allProduct = data.products;
+  console.log(allProduct)
   displayProducts(data.products);
-  renderCategoryButtons(data.products);
+  renderCategoryButtons(allProduct);
   // filterCategory(data.products)
   // showCart(data.products);
 }
+// all tab button
 fetchProducts()
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let reviews = [];
 
-function displayProducts(allProduct){
+const allProductsAgainForALlTabBtn = async ()=>{
+  const res = await fetch("https://dummyjson.com/products");
+  const data = await res.json();
+  displayProducts(data.products);
+}
+
+// all tab button
+allTab.addEventListener('click', () => {
+
+  // select all category buttons as array
+  const categoryButtons = Array.from(document.querySelectorAll(".catagory-btns"));
+
+  // remove active class from all buttons
+  categoryButtons.forEach(btn => btn.classList.remove("btn-neutral"));
+
+  // set All button active
+  allTab.classList.add("btn-neutral");
+
+  // Show all products
   const container = document.getElementById("products");
-  console.log(container)
+  container.innerHTML = "";
+  allProductsAgainForALlTabBtn(); // pass array of products
+});
+
+// display Products
+function displayProducts(allProduct){
+ 
   container.innerHTML=" ";
 
   allProduct.forEach(product =>{
@@ -40,24 +76,21 @@ function displayProducts(allProduct){
 }
 
 function renderCategoryButtons(allProduct){
-  const btnContainer = document.getElementById("categoryButtons");
-  btnContainer.innerHTML = "";
+//  const btnContainer = document.getElementById("categoryButtons");
 
   // Get unique categories
-  const categories = ["All", ...new Set(allProduct.map(p => p.category))];
+  const allProducts= [...allProduct]
+  const categories = [...new Set(allProducts.map(p => p.category))];
   console.log(categories)
 
-  categories.forEach(cat=>{
-    const btn = document.createElement("button");
-    btn.className = "btn btn-sm btn-outline";
-    btn.innerHTML = `
-    <dutton id="catagory-btn-$${cat}" >${cat}</dutton>
-    `
-    btn.addEventListener("click",()=> filterCategory(cat, allProduct));
-    btnContainer.appendChild(btn);
+  categories.forEach((cat, index) => {
+
+    createCategoryButton(cat, index, btnContainer, allProduct);
+    
   });
 }
 renderCategoryButtons()
+ 
 
 // Filter Products
 function filterCategory(category, allProduct){
@@ -69,6 +102,8 @@ function filterCategory(category, allProduct){
     displayProducts(filtered);
   }
 }
+
+
 
 
 function addToCart(id){
@@ -100,4 +135,45 @@ function addReview(){
 
 
 // showCart();
+
+
+function createCategoryButton(cat, index, container, allProduct){
+  // Create button
+  const btn = document.createElement("button");
+
+  // Unique id বা dataset
+  btn.id = `cat-btn-${index}`;
+  btn.dataset.category = cat;
+
+  // Classes
+  btn.className = "btn  btn-outline catagory-btns";
+
+  // Text
+  btn.innerText = cat.toUpperCase();
+
+    if(cat === "All"){
+    btn.classList.add("btn-neutral");
+  }
+ 
+  // Event listener
+  btn.addEventListener("click", (e) => {
+    // Remove active class from all buttons
+    const allBtns = container.querySelectorAll(".catagory-btns");
+    allBtns.forEach(b => b.classList.remove("btn-neutral"));
+
+   
+
+    // Add active class to clicked button
+    e.currentTarget.classList.add("btn-neutral");
+    e.currentTarget.classList.remove("btn-outline");
+    
+
+    // Filter products
+    filterCategory(cat, allProduct);
+  });
+
+  // Append to container
+  container.appendChild(btn);
+  // console.log(btn)
+}
 
