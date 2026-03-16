@@ -106,19 +106,66 @@
 <!-- Reviews -->
 <section class="p-10">
 
-<h2 class="text-2xl font-bold mb-6">Customer Reviews</h2>
+<!-- Minimal Review Section -->
+<div class="mt-8 pt-6 border-t border-base-200">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6">
+    <h3 class="text-lg font-bold">Reviews</h3>
+    <div class="flex items-center gap-2">
+      <span class="text-sm font-semibold">2.56</span>
+      <div class="rating rating-xs">
+        <input type="radio" name="rating-4" class="mask mask-star-2 bg-orange-400" disabled />
+        <input type="radio" name="rating-4" class="mask mask-star-2 bg-orange-400" disabled />
+        <input type="radio" name="rating-4" class="mask mask-star-2 bg-orange-400" disabled checked />
+        <input type="radio" name="rating-4" class="mask mask-star-2 bg-orange-400" disabled />
+        <input type="radio" name="rating-4" class="mask mask-star-2 bg-orange-400" disabled />
+      </div>
+    </div>
+  </div>
 
-<div class="space-y-4">
+  <!-- Review List -->
+  <div class="space-y-6">
+    
+    <!-- Single Review 1 -->
+    <div class="border-b border-base-100 pb-4">
+      <div class="flex justify-between items-center mb-1">
+        <span class="text-sm font-bold">John Doe</span>
+        <span class="text-[10px] opacity-50">23 May 2024</span>
+      </div>
+      <div class="rating rating-[10px] mb-2">
+        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled checked />
+        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled checked />
+        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled />
+        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled />
+        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled />
+      </div>
+      <p class="text-xs text-base-content/70 leading-relaxed">
+        "The mascara is good, but the packaging was slightly damaged. Overall happy with the volume."
+      </p>
+    </div>
 
-<div class="alert shadow">
-<span>⭐ ⭐ ⭐ ⭐ ⭐ Amazing sound quality!</span>
+    <!-- Single Review 2 -->
+    <div class="border-b border-base-100 pb-4">
+      <div class="flex justify-between items-center mb-1">
+        <span class="text-sm font-bold">Jane Smith</span>
+        <span class="text-[10px] opacity-50">12 June 2024</span>
+      </div>
+      <div class="rating rating-[10px] mb-2">
+        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled checked />
+        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled checked />
+        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled checked />
+        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled checked />
+        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled />
+      </div>
+      <p class="text-xs text-base-content/70 leading-relaxed">
+        "Absolutely love it! Best mascara for daily use. Highly recommended."
+      </p>
+    </div>
+
+  </div>
 </div>
 
-<div class="alert shadow">
-<span>⭐ ⭐ ⭐ ⭐ Good product for the price.</span>
-</div>
 
-</div>
 
 </section>
 
