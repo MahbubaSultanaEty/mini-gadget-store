@@ -107,7 +107,7 @@
 <section class="p-10">
 
 <!-- Minimal Review Section -->
-<div class="mt-8 pt-6 border-t border-base-200">
+<div id="reviews-container" class="mt-8 pt-6 border-t border-base-200">
   <!-- Header -->
   <div class="flex justify-between items-center mb-6">
     <h3 class="text-lg font-bold">Reviews</h3>
@@ -123,44 +123,55 @@
     </div>
   </div>
 
+  <div class="py-5">
+            <div class="flex justify-between items-center mb-1">
+                <span class="font-bold text-sm text-secondary">Emily</span>
+                <span class="text-[10px] opacity-40 italic">10/02/2025</span>
+            </div>
+            <div class="rating rating-[10px] mb-2">
+               
+                  <input type="radio" name="rating-3" class="mask mask-star-2 bg-orange-400" aria-label="1 star" />
+  <input type="radio" name="rating-3" class="mask mask-star-2 bg-orange-400" aria-label="2 star"  />
+  <input type="radio" name="rating-3" class="mask mask-star-2 bg-orange-400" aria-label="3 star"  />
+  <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" aria-label="4 star" checked="checked" />
+  <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" aria-label="5 star" />
+               
+            </div>
+            <p class="text-sm text-base-content/70 leading-relaxed">I just loved the quality of Essence Mascara Lash Princess. And so satisfied the quantity too.</p>
+        </div>
+
   <!-- Review List -->
   <div class="space-y-6">
     
-    <!-- Single Review 1 -->
-    <div class="border-b border-base-100 pb-4">
-      <div class="flex justify-between items-center mb-1">
-        <span class="text-sm font-bold">John Doe</span>
-        <span class="text-[10px] opacity-50">23 May 2024</span>
-      </div>
-      <div class="rating rating-[10px] mb-2">
-        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled checked />
-        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled checked />
-        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled />
-        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled />
-        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled />
-      </div>
-      <p class="text-xs text-base-content/70 leading-relaxed">
-        "The mascara is good, but the packaging was slightly damaged. Overall happy with the volume."
-      </p>
-    </div>
+    <div  class="max-w-2xl mx-auto my-10 p-6 bg-base-100 shadow-xl rounded-2xl border border-base-200">
+  <h2 class="text-xl font-bold mb-6 italic text-primary">Community Reviews</h2>
 
-    <!-- Single Review 2 -->
-    <div class="border-b border-base-100 pb-4">
-      <div class="flex justify-between items-center mb-1">
-        <span class="text-sm font-bold">Jane Smith</span>
-        <span class="text-[10px] opacity-50">12 June 2024</span>
+  <!-- Input Form -->
+  <div class="space-y-4 mb-10 p-4 bg-base-200 rounded-xl">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input type="text" id="user-name" placeholder="Your Name" class="input input-bordered input-sm w-full" />
+      <!-- Star Rating -->
+      <div class="rating rating-sm flex items-center gap-2">
+        <input type="radio" name="star-rating" class="mask mask-star-2 bg-orange-400" value="1" />
+        <input type="radio" name="star-rating" class="mask mask-star-2 bg-orange-400" value="2" />
+        <input type="radio" name="star-rating" class="mask mask-star-2 bg-orange-400" value="3" checked />
+        <input type="radio" name="star-rating" class="mask mask-star-2 bg-orange-400" value="4" />
+        <input type="radio" name="star-rating" class="mask mask-star-2 bg-orange-400" value="5" />
       </div>
-      <div class="rating rating-[10px] mb-2">
-        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled checked />
-        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled checked />
-        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled checked />
-        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled checked />
-        <input type="radio" class="mask mask-star-2 bg-orange-400" disabled />
-      </div>
-      <p class="text-xs text-base-content/70 leading-relaxed">
-        "Absolutely love it! Best mascara for daily use. Highly recommended."
-      </p>
     </div>
+    <textarea id="user-comment" class="textarea textarea-bordered w-full h-20" placeholder="Write your thoughts..."></textarea>
+    <div class="flex justify-end">
+      <button onclick="addNewReview()" class="btn btn-primary btn-sm px-8">Post Review</button>
+    </div>
+  </div>
+
+  <!-- Display Reviews List -->
+  <div id="reviews-container" class="divide-y divide-base-200">
+    <!-- এখানে জাভাস্ক্রিপ্ট দিয়ে রিভিউগুলো আসবে -->
+    <p class="text-center opacity-50 text-sm py-10">No reviews yet. Be the first!</p>
+  </div>
+</div>
+
 
   </div>
 </div>

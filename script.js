@@ -8,7 +8,15 @@ console.log(allTab);
 const categoryButtons = document.querySelectorAll(".catagory-btns");
 console.log(categoryButtons);
 const productDetailModal = document.getElementById("product-detail-modal");
-console.log(productDetailModal)
+console.log(productDetailModal);
+
+// ১. শুরুতে কিছু ডামি রিভিউ ডাটা (Optional)
+let allReviews = [
+    { name: "Sabbir Ahmed", comment: "Great experience with the service!", rating: 5, date: "2024-03-10" },
+    { name: "Anika Rai", comment: "The quality is okay for the price.", rating: 3, date: "2024-03-12" }
+];
+
+
 
 let globalProduct = [];
 
@@ -48,8 +56,6 @@ allTab.addEventListener('click', () => {
   container.innerHTML = "";
   allProductsAgainForALlTabBtn(); // pass array of products
 });
-
-
 
 
 // product Detail
@@ -242,8 +248,6 @@ function createCategoryButton(cat, index, container, allProduct){
 
 
 
-
-
 function addToCart(id){
   cart.push(id);
   localStorage.setItem("cart",JSON.stringify(cart));
@@ -251,26 +255,64 @@ function addToCart(id){
   showSuggestions(id);
 }
 
+// ২. রিভিউগুলো UI-তে দেখানোর ফাংশন
+function renderAllReviews() {
+    const container = document.getElementById('reviews-container');
+    
+    if (allReviews.length === 0) {
+        container.innerHTML = `<p class="text-center opacity-50 text-sm py-10">No reviews yet.</p>`;
+        return;
+    }
 
-function addReview(){
-  const name=document.getElementById("name").value;
-  const rating=document.getElementById("rating").value;
-  const comment=document.getElementById("comment").value;
-
-  reviews.push({name,rating,comment});
-
-  const div=document.getElementById("reviews");
-  div.innerHTML="";
-
-  reviews.forEach(r=>{
-    div.innerHTML+=`
-      <p><b>${r.name}</b> ⭐${r.rating}</p>
-      <p>${r.comment}</p>
-      <hr>
-    `;
-  });
+    container.innerHTML = allReviews.map(rev => `
+        <div class="py-5">
+            <div class="flex justify-between items-center mb-1">
+                <span class="font-bold text-sm text-secondary">${rev.name}</span>
+                <span class="text-[10px] opacity-40 italic">${new Date(rev.date).toLocaleDateString()}</span>
+            </div>
+            <div class="rating rating-[10px] mb-2">
+                ${Array.from({length: 5}).map((_, i) => `
+                    <input type="radio" class="mask mask-star-2 bg-orange-400" disabled ${i < rev.rating ? 'checked' : ''} />
+                `).join('')}
+            </div>
+            <p class="text-sm text-base-content/70 leading-relaxed">${rev.comment}</p>
+        </div>
+    `).reverse().join(''); // .reverse() যাতে নতুন রিভিউ সবার উপরে থাকে
 }
 
+// ৩. নতুন রিভিউ অ্যাড করার ফাংশন
+function addNewReview() {
+    const nameInput = document.getElementById('user-name');
+    const commentInput = document.getElementById('user-comment');
+    const starInput = document.querySelector('input[name="star-rating"]:checked');
 
+    const name = nameInput.value.trim();
+    const comment = commentInput.value.trim();
+    const rating = starInput ? parseInt(starInput.value) : 3;
 
+    if (!name || !comment) {
+        alert("Please write your name and a comment!");
+        return;
+    }
 
+    // নতুন ডাটা অবজেক্ট তৈরি
+    const newReview = {
+        name: name,
+        comment: comment,
+        rating: rating,
+        date: new Date().toISOString()
+    };
+
+    // অ্যারেতে পুশ করা
+    allReviews.push(newReview);
+
+    // ইনপুট ফিল্ড খালি করা
+    nameInput.value = "";
+    commentInput.value = "";
+
+    // UI আপডেট করা
+    renderAllReviews();
+}
+
+// ৪. পেজ লোড হওয়ার সময় আগের রিভিউগুলো দেখানো
+renderAllReviews();
