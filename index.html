@@ -46,23 +46,26 @@
 <!-- Category Buttons -->
 <div id="categoryButtons" class=" w-11/12 mx-auto grid grid-cols-5 gap-3 mb-6">
   <button id="all-tab" class="btn btn-neutral catagory-btns">All</button>
-
 </div>
 
-<!-- Product Cards Grid -->
-<div id="productContainer" class="grid md:grid-cols-3 gap-6"></div>
-<!-- Products -->
 
+<!-- Products -->
 <section  class="p-10">
 
 <h2 class="text-2xl font-bold mb-6">Products</h2>
 
-<div id="products" class="grid md:grid-cols-3 gap-6">
+<div id="products" class="grid md:grid-cols-3 gap-6"> </div>
 
 <!-- Product Card -->
 
 
 </section>
+
+<!-- product detail modal -->
+ <!-- Open the modal using ID.showModal() method -->
+<dialog id="product-detail-modal" class="modal">
+
+</dialog>
 
 <!-- Cart Sidebar -->
 <div id="cartSidebar" class="fixed top-0 right-0 w-80 h-full bg-base-100 shadow-lg p-6 transform translate-x-full transition-transform">
@@ -72,8 +75,8 @@
   <button class="btn btn-primary w-full mt-4">Checkout</button>
   <button class="btn btn-outline w-full mt-2" onclick="toggleCart()">Close</button>
 </div>
-<!-- Suggested Products -->
 
+<!-- Suggested Products -->
 <section class="p-10 bg-base-200">
 
 <h2 class="text-2xl font-bold mb-6">You May Also Like</h2>
@@ -101,7 +104,6 @@
 </section>
 
 <!-- Reviews -->
-
 <section class="p-10">
 
 <h2 class="text-2xl font-bold mb-6">Customer Reviews</h2>
@@ -121,7 +123,6 @@
 </section>
 
 <!-- Footer -->
-
 <footer class="footer footer-center p-6 bg-base-300 text-base-content">
   <p>© 2026 Mini Gadget Store</p>
 </footer>

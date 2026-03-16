@@ -7,18 +7,20 @@ const allTab = document.getElementById("all-tab");
 console.log(allTab);
 const categoryButtons = document.querySelectorAll(".catagory-btns");
 console.log(categoryButtons);
+const productDetailModal = document.getElementById("product-detail-modal");
+console.log(productDetailModal)
 
-
+let globalProduct = [];
 
 const fetchProducts = async () => {
     const res = await fetch("https://dummyjson.com/products");
     const data = await res.json();
   const allProduct = data.products;
   console.log(allProduct)
+  globalProduct = allProduct;
   displayProducts(data.products);
   renderCategoryButtons(allProduct);
-  // filterCategory(data.products)
-  // showCart(data.products);
+  displayProductDetail(allProduct, allProduct.id)
 }
 // all tab button
 fetchProducts()
@@ -47,6 +49,100 @@ allTab.addEventListener('click', () => {
   allProductsAgainForALlTabBtn(); // pass array of products
 });
 
+
+
+
+// product Detail
+const displayProductDetail = (id) => {
+  console.log(globalProduct, id);
+
+  const product = globalProduct.find(product => product.id == id)
+  
+  if (product){
+    console.log(productDetailModal);
+    productDetailModal.innerHTML = `
+  <!-- The Modal Trigger (Checkbox based for DaisyUI) -->
+<input type="checkbox" id="product-modal" class="modal-toggle" />
+
+<div class="modal modal-bottom sm:modal-middle " role="dialog">
+  <div class="modal-box max-w-3xl p-0 ">
+    
+    <!-- Close Button -->
+    <label for="product-modal" class="btn btn-sm btn-circle btn-ghost absolute right-1 top-0 z-10">✕</label>
+
+    <div class="flex flex-col md:flex-row">
+      <!-- Product Image Section -->
+      <div class="md:w-1/2 bg-base-200 flex items-center justify-center p-6">
+        <img src="${product.images}" 
+             alt="${product.title}" 
+             class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-300" />
+      </div>
+
+      <!-- Product Content Section -->
+      <div class="md:w-1/2 p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-start">
+            <span class="badge badge-secondary badge-outline uppercase text-xs font-bold tracking-widest mb-2">
+              ${product.category}
+            </span>
+            <span class="badge badge-error gap-2 text-white font-semibold">
+              -${product.discountPercentage}% OFF
+            </span>
+          </div>
+          
+          <h3 class="text-2xl font-bold text-base-content">${product.title}</h3>
+          <p class="text-sm text-base-content/70 mt-1">Brand: <span class="font-medium">${product.brand}</span></p>
+
+          <!-- Rating & Stock -->
+          <div class="flex items-center gap-4 my-3">
+            <div class="rating rating-sm">
+              <input type="radio" class="mask mask-star-2 bg-orange-400" disabled ${product.rating >= 1 ? 'checked' : ''} />
+              <input type="radio" class="mask mask-star-2 bg-orange-400" disabled ${product.rating >= 2 ? 'checked' : ''} />
+              <input type="radio" class="mask mask-star-2 bg-orange-400" disabled ${product.rating >= 3 ? 'checked' : ''} />
+              <input type="radio" class="mask mask-star-2 bg-orange-400" disabled />
+              <input type="radio" class="mask mask-star-2 bg-orange-400" disabled />
+              <span class="ml-2 text-sm font-semibold">${product.rating}</span>
+            </div>
+            <div class="divider divider-horizontal m-0"></div>
+            <span class="text-xs font-bold text-success uppercase">${product.availabilityStatus}</span>
+          </div>
+
+          <p class="text-sm leading-relaxed text-base-content/80 line-clamp-3">
+            ${product.description}
+          </p>
+
+          <!-- Specs List -->
+          <div class="grid grid-cols-2 gap-2 mt-4 text-xs">
+            <div class="bg-base-200 p-2 rounded"><strong>Warranty:</strong> ${product.warrantyInformation}</div>
+            <div class="bg-base-200 p-2 rounded"><strong>Shipping:</strong> ${product.shippingInformation}</div>
+            <div class="bg-base-200 p-2 rounded"><strong>Return:</strong> ${product.returnPolicy}</div>
+            <div class="bg-base-200 p-2 rounded"><strong>Stock:</strong> ${product.stock} units</div>
+          </div>
+        </div>
+
+        <!-- Footer: Price & Action -->
+        <div class="mt-6 flex items-center justify-between border-t pt-4">
+          <div>
+            <span class="text-3xl font-extrabold text-primary">$${product.price}</span>
+            <span class="text-sm line-through ml-2 opacity-50">$${(product.price * 1.1).toFixed(2)}</span>
+          </div>
+          <button class="btn btn-primary px-8">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Click outside to close -->
+  <label class="modal-backdrop" for="product-modal">Close</label>
+</div>
+
+  `
+  }
+
+}
+
+
+
 // display Products
 function displayProducts(allProduct){
  
@@ -66,7 +162,7 @@ function displayProducts(allProduct){
         ${product.stock>0 ? 'In Stock' : 'Out of Stock'}
       </p>
       <div class="card-actions justify-end mt-2">
-        <label for="product-modal" class="btn btn-primary btn-sm" onclick="openModal(${product.id})">View Details</label>
+        <label for="product-modal" class="btn btn-primary btn-sm" onclick="displayProductDetail(${product.id})">View Details</label>
       </div>
     </div>
     `;
@@ -74,6 +170,7 @@ function displayProducts(allProduct){
     container.appendChild(div);
   });
 }
+
 
 function renderCategoryButtons(allProduct){
 //  const btnContainer = document.getElementById("categoryButtons");
@@ -102,40 +199,6 @@ function filterCategory(category, allProduct){
     displayProducts(filtered);
   }
 }
-
-
-
-
-function addToCart(id){
-  cart.push(id);
-  localStorage.setItem("cart",JSON.stringify(cart));
-  // showCart();
-  showSuggestions(id);
-}
-
-
-function addReview(){
-  const name=document.getElementById("name").value;
-  const rating=document.getElementById("rating").value;
-  const comment=document.getElementById("comment").value;
-
-  reviews.push({name,rating,comment});
-
-  const div=document.getElementById("reviews");
-  div.innerHTML="";
-
-  reviews.forEach(r=>{
-    div.innerHTML+=`
-      <p><b>${r.name}</b> ⭐${r.rating}</p>
-      <p>${r.comment}</p>
-      <hr>
-    `;
-  });
-}
-
-
-// showCart();
-
 
 function createCategoryButton(cat, index, container, allProduct){
   // Create button
@@ -176,4 +239,38 @@ function createCategoryButton(cat, index, container, allProduct){
   container.appendChild(btn);
   // console.log(btn)
 }
+
+
+
+
+
+function addToCart(id){
+  cart.push(id);
+  localStorage.setItem("cart",JSON.stringify(cart));
+  // showCart();
+  showSuggestions(id);
+}
+
+
+function addReview(){
+  const name=document.getElementById("name").value;
+  const rating=document.getElementById("rating").value;
+  const comment=document.getElementById("comment").value;
+
+  reviews.push({name,rating,comment});
+
+  const div=document.getElementById("reviews");
+  div.innerHTML="";
+
+  reviews.forEach(r=>{
+    div.innerHTML+=`
+      <p><b>${r.name}</b> ⭐${r.rating}</p>
+      <p>${r.comment}</p>
+      <hr>
+    `;
+  });
+}
+
+
+
 
