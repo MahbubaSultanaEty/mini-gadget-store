@@ -9,12 +9,7 @@ const categoryButtons = document.querySelectorAll(".catagory-btns");
 console.log(categoryButtons);
 const productDetailModal = document.getElementById("product-detail-modal");
 console.log(productDetailModal);
-
-// ১. শুরুতে কিছু ডামি রিভিউ ডাটা (Optional)
-let allReviews = [
-    { name: "Sabbir Ahmed", comment: "Great experience with the service!", rating: 5, date: "2024-03-10" },
-    { name: "Anika Rai", comment: "The quality is okay for the price.", rating: 3, date: "2024-03-12" }
-];
+const reviewList = document.getElementById('review-list');
 
 
 
@@ -256,63 +251,54 @@ function addToCart(id){
 }
 
 // ২. রিভিউগুলো UI-তে দেখানোর ফাংশন
-function renderAllReviews() {
-    const container = document.getElementById('reviews-container');
-    
-    if (allReviews.length === 0) {
-        container.innerHTML = `<p class="text-center opacity-50 text-sm py-10">No reviews yet.</p>`;
-        return;
-    }
-
-    container.innerHTML = allReviews.map(rev => `
-        <div class="py-5">
-            <div class="flex justify-between items-center mb-1">
-                <span class="font-bold text-sm text-secondary">${rev.name}</span>
-                <span class="text-[10px] opacity-40 italic">${new Date(rev.date).toLocaleDateString()}</span>
-            </div>
-            <div class="rating rating-[10px] mb-2">
-                ${Array.from({length: 5}).map((_, i) => `
-                    <input type="radio" class="mask mask-star-2 bg-orange-400" disabled ${i < rev.rating ? 'checked' : ''} />
-                `).join('')}
-            </div>
-            <p class="text-sm text-base-content/70 leading-relaxed">${rev.comment}</p>
-        </div>
-    `).reverse().join(''); // .reverse() যাতে নতুন রিভিউ সবার উপরে থাকে
-}
-
-// ৩. নতুন রিভিউ অ্যাড করার ফাংশন
 function addNewReview() {
-    const nameInput = document.getElementById('user-name');
-    const commentInput = document.getElementById('user-comment');
-    const starInput = document.querySelector('input[name="star-rating"]:checked');
-
-    const name = nameInput.value.trim();
-    const comment = commentInput.value.trim();
-    const rating = starInput ? parseInt(starInput.value) : 3;
-
-    if (!name || !comment) {
-        alert("Please write your name and a comment!");
+    // ১. Input field gulo theke value neya
+    const userName = document.getElementById('user-name').value;
+    const userComment = document.getElementById('user-comment').value;
+    const starRating = document.querySelector('input[name="star-rating"]:checked').value;
+    
+    // Validation: Name ba Comment faka thakle alert dibe
+    if (userName.trim() === "" || userComment.trim() === "") {
+        alert("Please enter your name and review.");
         return;
     }
 
-    // নতুন ডাটা অবজেক্ট তৈরি
-    const newReview = {
-        name: name,
-        comment: comment,
-        rating: rating,
-        date: new Date().toISOString()
-    };
+    // ২. Ajker date format kora (DD/MM/YYYY)
+    const today = new Date();
+    const dateStr = today.getDate().toString().padStart(2, '0') + '/' + 
+                    (today.getMonth() + 1).toString().padStart(2, '0') + '/' + 
+                    today.getFullYear();
 
-    // অ্যারেতে পুশ করা
-    allReviews.push(newReview);
+    // ৩. Review list container-ti khuje ber kora
+    const reviewList = document.getElementById('review-list');
 
-    // ইনপুট ফিল্ড খালি করা
-    nameInput.value = "";
-    commentInput.value = "";
+    // ৪. Notun review element create kora (Exactly existing style e)
+    const newReview = document.createElement('div');
+    newReview.className = 'py-5 border-t border-base-200'; // border-t add kora hoyeche divide korar jonno
 
-    // UI আপডেট করা
-    renderAllReviews();
+    let starsHtml = '';
+    for (let i = 1; i <= 5; i++) {
+        starsHtml += `<input type="radio" class="mask mask-star-2 bg-orange-400" aria-label="${i} star" ${i == starRating ? 'checked="checked"' : ''} disabled />`;
+    }
+
+    newReview.innerHTML = `
+        <div class="flex justify-between items-center mb-1">
+            <span class="font-bold text-sm text-secondary">${userName}</span>
+            <span class="text-[10px] opacity-40 italic">${dateStr}</span>
+        </div>
+        <div class="rating rating-[10px] mb-2">
+            ${starsHtml}
+        </div>
+        <p class="text-sm text-base-content/70 leading-relaxed">${userComment}</p>
+    `;
+
+    // ৫. List-er shurute notun review-ti add kora
+    reviewList.prepend(newReview);
+
+    // ৬. Input field gulo empty/clear kore deya
+    document.getElementById('user-name').value = '';
+    document.getElementById('user-comment').value = '';
+    // Rating default 3-te set kora
+    const defaultRating = document.querySelector('input[name="star-rating"][value="3"]');
+    if (defaultRating) defaultRating.checked = true;
 }
-
-// ৪. পেজ লোড হওয়ার সময় আগের রিভিউগুলো দেখানো
-renderAllReviews();
