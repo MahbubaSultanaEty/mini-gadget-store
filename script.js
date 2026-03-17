@@ -91,7 +91,7 @@ const displayProductDetail = (id) => {
             </span>
           </div>
           
-          <h3 class="text-2xl font-bold text-base-content">${product.title}</h3>
+          <h3 class="text-2xl font-bold text-base-content ">${product.title}</h3>
           <p class="text-sm text-base-content/70 mt-1">Brand: <span class="font-medium">${product.brand}</span></p>
 
           <!-- Rating & Stock -->
@@ -124,10 +124,10 @@ const displayProductDetail = (id) => {
         <!-- Footer: Price & Action -->
         <div class="mt-6 flex items-center justify-between border-t pt-4">
           <div>
-            <span class="text-3xl font-extrabold text-primary">$${product.price}</span>
+            <span class="text-3xl font-extrabold text-green-800">$${product.price}</span>
             <span class="text-sm line-through ml-2 opacity-50">$${(product.price * 1.1).toFixed(2)}</span>
           </div>
-          <button onclick="addToCart(${product.id}, '${product.title.replace(/'/g, "\\'")}', ${product.price}, '${product.thumbnail}')" class="btn btn-primary px-8">
+          <button onclick="addToCart(${product.id}, '${product.title.replace(/'/g, "\\'")}', ${product.price}, '${product.thumbnail}')" class="btn btn-success px-8">
   Add to Cart
 </button>
         </div>
@@ -153,13 +153,13 @@ function displayProducts(allProduct){
 
   allProduct.forEach(product =>{
     const div = document.createElement("div");
-    div.className="card bg-base-100 shadow-xl border border-black border-t-6 border-l-6";
+    div.className="card bg-base-100 shadow-xl border border-neutral border-t-6 border-l-6";
 
     div.innerHTML=`
      <figure><img src="${product.thumbnail}" class=" w-full object-cover"/></figure>
     <div class="card-body">
       <h2 class="card-title">${product.title}</h2>
-      <p class="text-lg font-semibold">$${product.price}</p>
+      <p class="text-lg font-semibold text-green-800">$${product.price}</p>
       <p class="text-sm">Rating: ${product.rating} ⭐</p>
       <p class="text-sm ${product.stock>0 ? 'text-green-600' : 'text-red-600'}">
         ${product.stock>0 ? 'In Stock' : 'Out of Stock'}
