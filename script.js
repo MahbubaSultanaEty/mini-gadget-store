@@ -10,7 +10,7 @@ console.log(categoryButtons);
 const productDetailModal = document.getElementById("product-detail-modal");
 console.log(productDetailModal);
 const reviewList = document.getElementById('review-list');
-
+let cart = [];
 
 
 let globalProduct = [];
@@ -74,7 +74,7 @@ const displayProductDetail = (id) => {
     <div class="flex flex-col md:flex-row">
       <!-- Product Image Section -->
       <div class="md:w-1/2 bg-base-200 flex items-center justify-center p-6">
-        <img src="${product.images}" 
+        <img src="${product.thumbnail}" 
              alt="${product.title}" 
              class="rounded-xl shadow-lg hover:scale-105 transition-transform duration-300" />
       </div>
@@ -127,7 +127,9 @@ const displayProductDetail = (id) => {
             <span class="text-3xl font-extrabold text-primary">$${product.price}</span>
             <span class="text-sm line-through ml-2 opacity-50">$${(product.price * 1.1).toFixed(2)}</span>
           </div>
-          <button class="btn btn-primary px-8">Add to Cart</button>
+          <button onclick="addToCart(${product.id}, '${product.title.replace(/'/g, "\\'")}', ${product.price}, '${product.thumbnail}')" class="btn btn-primary px-8">
+  Add to Cart
+</button>
         </div>
       </div>
     </div>
@@ -151,7 +153,7 @@ function displayProducts(allProduct){
 
   allProduct.forEach(product =>{
     const div = document.createElement("div");
-    div.className="card bg-base-100 shadow-xl";
+    div.className="card bg-base-100 shadow-xl border border-black border-t-6 border-l-6";
 
     div.innerHTML=`
      <figure><img src="${product.thumbnail}" class=" w-full object-cover"/></figure>
@@ -163,7 +165,7 @@ function displayProducts(allProduct){
         ${product.stock>0 ? 'In Stock' : 'Out of Stock'}
       </p>
       <div class="card-actions justify-end mt-2">
-        <label for="product-modal" class="btn btn-primary btn-sm" onclick="displayProductDetail(${product.id})">View Details</label>
+        <label for="product-modal" class="btn btn-neutral btn-sm" onclick="displayProductDetail(${product.id})">View Details</label>
       </div>
     </div>
     `;
@@ -242,15 +244,7 @@ function createCategoryButton(cat, index, container, allProduct){
 }
 
 
-
-function addToCart(id){
-  cart.push(id);
-  localStorage.setItem("cart",JSON.stringify(cart));
-  // showCart();
-  showSuggestions(id);
-}
-
-// ২. রিভিউগুলো UI-তে দেখানোর ফাংশন
+//  Add new review
 function addNewReview() {
     // ১. Input field gulo theke value neya
     const userName = document.getElementById('user-name').value;
@@ -302,3 +296,78 @@ function addNewReview() {
     const defaultRating = document.querySelector('input[name="star-rating"][value="3"]');
     if (defaultRating) defaultRating.checked = true;
 }
+
+
+// ১. Cart Show/Hide Functions
+function showCart() {
+    document.getElementById('cart-sidebar').classList.remove('translate-x-full');
+    document.getElementById('cart-overlay').classList.remove('hidden');
+}
+
+function hideCart() {
+    document.getElementById('cart-sidebar').classList.add('translate-x-full');
+    document.getElementById('cart-overlay').classList.add('hidden');
+}
+
+// ২. Modal theke Add to Cart (Ei function-ti Modal-er button-e call korben)
+function addToCart(id, name, price, image) {
+    // Check item already ache kina
+    const existingItem = cart.find(item => item.id === id);
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({ id, name, price, image, quantity: 1 });
+    }
+
+    updateCartUI();
+    showCart(); // Item add korle auto cart open hobe
+}
+
+// ৩. UI Update kora
+function updateCartUI() {
+    const container = document.getElementById('cart-items-container');
+    const countSpan = document.getElementById('cart-count');
+    const totalSpan = document.getElementById('cart-total');
+    
+    container.innerHTML = '';
+    let total = 0;
+    let itemCount = 0;
+
+    cart.forEach(item => {
+        total += item.price * item.quantity;
+        itemCount += item.quantity;
+
+        container.innerHTML += `
+            <div class="flex items-center gap-4 bg-base-200 p-2 rounded-lg">
+                <img src="${item.image}" class="w-12 h-12 rounded object-cover" />
+                <div class="flex-grow">
+                    <h4 class="text-xs font-bold line-clamp-1">${item.name}</h4>
+                    <p class="text-xs opacity-70">$${item.price} x ${item.quantity}</p>
+                </div>
+                <button onclick="removeFromCart(${item.id})" class="btn btn-xs btn-error btn-outline">✕</button>
+            </div>
+        `;
+    });
+
+    if (cart.length === 0) {
+        container.innerHTML = '<p class="text-center text-sm opacity-50 mt-10">Your cart is empty</p>';
+    }
+
+    countSpan.innerText = itemCount;
+    totalSpan.innerText = total.toFixed(2);
+}
+
+// ৪. Item Remove Function
+function removeFromCart(id) {
+    cart = cart.filter(item => item.id !== id);
+    updateCartUI();
+}
+
+function checkout() {
+  const cartContainer = document.getElementById('cart-items-container');
+  cartContainer.innerHTML = ' ';
+  const totalSpan = document.getElementById('cart-total');
+  totalSpan.innerText = "0.00";
+}
+
